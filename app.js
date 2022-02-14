@@ -2,7 +2,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 require('dotenv').config()
-const {PORT, BASE_URL} = process.env
+const mongo = require('./config/mongo.config')
+const {PORT, BASE_URL, DB_URL} = process.env
+
 // console.log(process.env)
 //initializing packages
 const app = express()
@@ -18,7 +20,8 @@ app.use('/api', require('./routes/home.routes'))
    res.send('Hello World')
  })*/
 
-//start server
-app.listen(PORT || 3000, () => {
-  console.log('The server is running at port localhost:3000')
-})
+//start server, we connecting our mongo
+app.listen( process.env.PORT || 3000, async () => {
+  await mongo(DB_URL)
+  console.log(`the server is running on Port ${BASE_URL}${PORT}`);
+});
